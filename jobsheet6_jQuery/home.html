@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Try me!</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("button").click(function () {
+                    $("#box").load("/dasarweb/jobsheet6_jQuery/test-content.html");
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="box">
+            <h2>Klik tombol di bawah untuk menampilkan konten</h2>
+        </div>
+        <button type="button">Click Me!</button>
+    </body>
+</html>
