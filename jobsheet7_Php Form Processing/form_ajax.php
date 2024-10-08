@@ -34,23 +34,24 @@
     </form>
 
     <div id="hasil">
-        
+        <!-- Hasil akan ditampilkan di sini -->
     </div>
 
     <script>
         $(document).ready(function () {
             $("#myForm").submit(function (e) {
-                e.preventDefault(); 
+                e.preventDefault(); // Mencegah pengiriman form secara default
 
+                // Mengumpulkan data form
                 var formData = $("#myForm").serialize();
 
-                
+                // Kirim data ke server PHP
                 $.ajax({
-                    url: "form_next.php", 
+                    url: "form_next.php", // Ganti dengan nama file PHP yang sesuai
                     type: "POST",
                     data: formData,
                     success: function (response) {
-                        
+                        // Tampilkan hasil dari server di div "hasil"
                         $("#hasil").html(response);
                     }
                 });
