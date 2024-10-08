@@ -1,5 +1,5 @@
 <?php
-$pattern = '/go?d/';
+$pattern = '/go{1,2}d/';
 $text = 'god is good';
 if (preg_match($pattern, $text, $matches)) {
     echo "Cocokkan: " . $matches[0];
