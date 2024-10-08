@@ -1,5 +1,4 @@
 <?php
-// PHP server-side validation
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = $_POST['nama'];
     $email = $_POST['email'];
@@ -34,13 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Form Input dengan Validasi</title>
+    <title>Form Input dengan Validasi via AJAX</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Form Input dengan Validasi</h1>
-    <!-- Form HTML -->
-    <form id="myForm" method="post" action="">
+    <form id="myForm">
         <label for="nama">Nama:</label>
         <input type="text" id="nama" name="nama">
         <span id="nama-error" style="color: red;"></span><br>
@@ -52,41 +50,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="submit" value="Submit">
     </form>
 
-    <!-- jQuery Client-side validation -->
+    <div id="hasil"></div>
+
     <script>
         $(document).ready(function() {
             $("#myForm").submit(function(event) {
-                var nama = $("#nama").val();
-                var email = $("#email").val();
-                var valid = true;
+                event.preventDefault(); 
+                var formData = $("#myForm").serialize();
 
-                if (nama === "") {
-                    $("#nama-error").text("Nama harus diisi.");
-                    valid = false;
-                } else {
-                    $("#nama-error").text("");
-                }
-
-               
-                if (email === "") {
-                    $("#email-error").text("Email harus diisi.");
-                    valid = false;
-                } else if (!validateEmail(email)) {
-                    $("#email-error").text("Format email tidak valid.");
-                    valid = false;
-                } else {
-                    $("#email-error").text("");
-                }
-
-                if (!valid) {
-                    event.preventDefault();
-                }
+                // AJAX request
+                $.ajax({
+                    url: "form_validation.php", 
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        
+                        $("#hasil").html(response);
+                    },
+                    error: function() {
+                        $("#hasil").html("Terjadi kesalahan saat mengirim data.");
+                    }
+                });
             });
-
-            function validateEmail(email) {
-                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(String(email).toLowerCase());
-            }
         });
     </script>
 </body>
