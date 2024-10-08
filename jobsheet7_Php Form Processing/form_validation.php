@@ -2,30 +2,34 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = $_POST['nama'];
     $email = $_POST['email'];
+    $password = $_POST['password']; 
     $errors = array();
 
-    // Validasi Nama
     if (empty($nama)) {
         $errors[] = "Nama harus diisi.";
     }
 
-    // Validasi Email
     if (empty($email)) {
         $errors[] = "Email harus diisi.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Format email tidak valid.";
     }
 
-    // Jika ada kesalahan validasi
+    if (empty($password)) {
+        $errors[] = "Password harus diisi.";
+    } elseif (strlen($password) < 8) {
+        $errors[] = "Password harus minimal 8 karakter.";
+    }
+
     if (!empty($errors)) {
         foreach ($errors as $error) {
             echo $error . "<br>";
         }
     } else {
-        // Menampilkan hasil jika semua validasi berhasil
         echo "Data berhasil dikirim:<br>";
         echo "Nama = $nama<br>";
         echo "Email = $email<br>";
+        echo "Password = " . str_repeat('*', strlen($password)) . "<br>";  // Mask the password
     }
 }
 ?>
@@ -47,6 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="email" name="email">
         <span id="email-error" style="color: red;"></span><br>
 
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <span id="password-error" style="color: red;"></span><br>
+
         <input type="submit" value="Submit">
     </form>
 
@@ -55,16 +63,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         $(document).ready(function() {
             $("#myForm").submit(function(event) {
-                event.preventDefault(); 
+                event.preventDefault();
+                var nama = $("#nama").val();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                var valid = true;
+
+                if (nama === "") {
+                    $("#nama-error").text("Nama harus diisi.");
+                    valid = false;
+                } else {
+                    $("#nama-error").text("");
+                }
+
+                if (email === "") {
+                    $("#email-error").text("Email harus diisi.");
+                    valid = false;
+                } else if (!validateEmail(email)) {
+                    $("#email-error").text("Format email tidak valid.");
+                    valid = false;
+                } else {
+                    $("#email-error").text("");
+                }
+
+                if (password === "") {
+                    $("#password-error").text("Password harus diisi.");
+                    valid = false;
+                } else if (password.length < 8) {
+                    $("#password-error").text("Password harus minimal 8 karakter.");
+                    valid = false;
+                } else {
+                    $("#password-error").text("");
+                }
+
+                if (!valid) {
+                    return;
+                }
+
                 var formData = $("#myForm").serialize();
 
                 // AJAX request
                 $.ajax({
-                    url: "form_validation.php", 
+                    url: "form_validation.php",
                     type: "POST",
                     data: formData,
                     success: function(response) {
-                        
                         $("#hasil").html(response);
                     },
                     error: function() {
@@ -72,6 +115,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 });
             });
+
+            function validateEmail(email) {
+                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
         });
     </script>
 </body>
