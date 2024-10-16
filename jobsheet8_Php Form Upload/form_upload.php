@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>File Upload</tittle>
+        <title>File Upload</title>
     </head>
     <body>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
