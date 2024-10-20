@@ -6,7 +6,10 @@
     <body>
         <form action="upload.php" method="POST" enctype="multipart/form-data">
             <input type="file" name="myfile" />
-            <input type="submit" name="submit" value="submit" />
+            <input type="submit" name="submit" value="Upload" />
         </form>
+        <br>
+        <!-- Thumbnail container -->
+        <div id="thumbnail-container"></div>
     </body>
 </html>
