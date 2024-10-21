@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Unggah File Dokumemn</title>
+        <title>Unggah File Dokumen</title>
     </head>
     <body>
         <form id="upload-form" action="upload_ajax.php" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" id="file">
+            <input type="file" name="file[]" id="file" multiple>
             <input type="submit" name="submit" value="unggah">
         </form>
         <div id="status"></div>
