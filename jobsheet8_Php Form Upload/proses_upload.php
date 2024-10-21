@@ -6,15 +6,21 @@ if (!file_exists($targetDirectory)) {
 
 if ($_FILES['files']['name'][0]) {
     $totalFiles = count($_FILES['files']['name']);
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif']; 
 
     for ($i = 0; $i < $totalFiles; $i++) { 
         $fileName = $_FILES['files']['name'][$i];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION)); 
         $targetFile = $targetDirectory . $fileName;
 
-        if (move_uploaded_file($_FILES['files']['tmp_name'][$i], $targetFile)) {
-            echo "File $fileName berhasil diunggah.<br>";
+        if (in_array($fileExtension, $allowedExtensions)) {
+            if (move_uploaded_file($_FILES['files']['tmp_name'][$i], $targetFile)) {
+                echo "File $fileName berhasil diunggah.<br>";
+            } else {
+                echo "Gagal mengunggah file $fileName.<br>";
+            }
         } else {
-            echo "Gagal mengunggah file $fileName.<br>";
+            echo "File $fileName bukan gambar yang valid.<br>";
         }
     }
 } else {
